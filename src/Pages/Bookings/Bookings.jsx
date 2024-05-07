@@ -9,14 +9,14 @@ const Bookings = () => {
     const [bookings, setBookings] = useState([]);
     const axiosSecure = useAxiosSecure();
 
-    //const url = `http://localhost:5000/bookings?email=${user?.email}`
+    //const url = `https://car-doctor-theta.vercel.app/bookings?email=${user?.email}`
     const url = `/bookings?email=${user?.email}`
 
     useEffect(() => {
         axiosSecure.get(url)
-        .then(res => {
-            setBookings(res.data);
-        })
+            .then(res => {
+                setBookings(res.data);
+            })
         //fetch(url)
         //    .then(res => res.json())
         //    .then(data => setBookings(data))
@@ -25,13 +25,13 @@ const Bookings = () => {
     const handleDelete = id => {
         const proceed = confirm('Are You sure you want to delete?');
         if (proceed) {
-            fetch(`http://localhost:5000/bookings/${id}`, {
+            fetch(`https://car-doctor-theta.vercel.app/bookings/${id}`, {
                 method: 'DELETE'
             })
                 .then(res => res.json())
                 .then(data => {
                     console.log(data);
-                    if(data.deletedCount > 0){
+                    if (data.deletedCount > 0) {
                         alert('deleted successful')
                         const remaining = bookings.filter(booking => booking._id !== id);
                         setBookings(remaining);
@@ -41,24 +41,24 @@ const Bookings = () => {
     }
 
     const handleBookingConfirm = id => {
-        fetch(`http://localhost:5000/bookings/${id}`, {
+        fetch(`https://car-doctor-theta.vercel.app/bookings/${id}`, {
             method: 'PATCH',
             headers: {
                 'content-type': 'application/json'
             },
-            body: JSON.stringify({status: 'Confirm'})
+            body: JSON.stringify({ status: 'Confirm' })
         })
-        .then(res => res.json())
-        .then(data => {
-            console.log(data);
-            if(data.modifiedCount > 0){
-                const remaining = bookings.filter(booking => booking._id !== id);
-                const updated = bookings.find(booking => booking._id === id);
-                updated.status = 'Confirm'
-                const newBookings = [updated, ...remaining];
-                setBookings(newBookings);
-            }
-        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                if (data.modifiedCount > 0) {
+                    const remaining = bookings.filter(booking => booking._id !== id);
+                    const updated = bookings.find(booking => booking._id === id);
+                    updated.status = 'Confirm'
+                    const newBookings = [updated, ...remaining];
+                    setBookings(newBookings);
+                }
+            })
     }
 
     return (
@@ -79,10 +79,10 @@ const Bookings = () => {
                     <tbody>
                         {
                             bookings.map(booking => <BookingsRow
-                            key={booking._id}
-                            booking={booking}
-                            handleDelete={handleDelete}
-                            handleBookingConfirm={handleBookingConfirm}
+                                key={booking._id}
+                                booking={booking}
+                                handleDelete={handleDelete}
+                                handleBookingConfirm={handleBookingConfirm}
                             ></BookingsRow>)
                         }
                     </tbody>
